@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\SupplierController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,3 +20,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/logs', [App\Http\Controllers\LogController::class, 'index'])->name('logs');
+Route::get('/new_supplier', [App\Http\Controllers\SupplierController::class, 'supplier_create']);
+Route::resource('supplier', 'SupplierController', [
+        'only' => [
+            'update' , 'index', 'store'
+        ]
+    ]);
+//new
