@@ -21,8 +21,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/logs', [App\Http\Controllers\LogController::class, 'index'])->name('logs');
-Route::get('/new_supplier', [App\Http\Controllers\SupplierController::class, 'supplier_create']);
-Route::resource('supplier', 'SupplierController', [
+Route::get('/suppliers', [App\Http\Controllers\SupplierController::class, 'index'])->name('suppliers');
+Route::get('/new_supplier', [App\Http\Controllers\SupplierController::class, 'supplier_create'])->name('new_supplier');
+Route::resource('supplier', 'App\Http\Controllers\SupplierController', [
         'only' => [
             'update' , 'index', 'store'
         ]

@@ -17,9 +17,15 @@ class SupplierController extends Controller
      * @return \Illuminate\View\View
      */
 
+    public function index()
+    {
+        $suppliers = DB::table('suppliers')->get();
+        return view('viewsuppliers', compact('suppliers'));
+    }
+
     public function supplier_create()
     {
-        return view('supplier-create');
+        return view('viewsuppliercreate');
     }
 
     public function store(Request $request)
@@ -30,7 +36,7 @@ class SupplierController extends Controller
         ]);
 
         // create a new incomplete task with the given title
-        DB::insert('insert into suppliers (name) values (?)', [$data['assigned_to']]);
+        DB::insert('insert into suppliers (name) values (?)', [$data['supplier']]);
         DB::insert('insert into logs (action, type, created_at) values (?, ?, ?)', ['create', 'supplier', Carbon::now()]);
         // redirect to tasks index
         return redirect('/logs');

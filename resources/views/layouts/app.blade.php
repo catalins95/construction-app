@@ -40,6 +40,16 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('logs') }}">{{ __('Logs') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('suppliers') }}">{{ __('Suppliers') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('new_supplier') }}">{{ __('New Supplier') }}</a>
+                                </li>
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
