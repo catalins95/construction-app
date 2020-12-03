@@ -14,9 +14,10 @@
                 <div class="card-body">
                    <table class="table table-striped">
                           <tr>
-                              <th>ID</th>
+                              <th>LogID</th>
                               <th>Action</th>
                               <th>Type</th>
+                              <th>Model ID</th>
                               <th>Date</th>
                           </tr>
                        @foreach ($logs as $log)
@@ -24,6 +25,7 @@
                                 <td>{{ $log->id }} </td>
                                 <td>{{ $log->action }} </td>
                                 <td>{{ $log->type }} </td>
+                                <td>{{ $log->modelid }} </td>
                                 <td>{{ $log->created_at }} </td>
                            </tr>
                        @endforeach

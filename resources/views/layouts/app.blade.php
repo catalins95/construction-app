@@ -50,6 +50,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('new_supplier') }}">{{ __('New Supplier') }}</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('contracts') }}">{{ __('Contracts') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('new_contract') }}">{{ __('New Contract') }}</a>
+                                </li>
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>

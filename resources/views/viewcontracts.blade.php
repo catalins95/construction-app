@@ -16,19 +16,21 @@
                           <tr>
                               <th>ID</th>
                               <th>Name</th>
+                              <th>With Supplier</th>
                               <th>Created At</th>
                               <th>Action</th>
                           </tr>
-                       @foreach ($suppliers as $supplier)
+                       @foreach ($contracts as $contract)
                            <tr>
-                                <td>{{ $supplier->id }} </td>
-                                <td>{{ $supplier->name }} </td>
-                                <td>{{ $supplier->created_at }} </td>
+                                <td>{{ $contract->id }} </td>
+                                <td>{{ $contract->name }} </td>
+                                <td>{{ $contract->with }} </td>
+                                <td>{{ $contract->created_at }} </td>
                                 <td> 
                                       <form method="POST" >
                                            @csrf
                                            @method('DELETE')
-                                           <button type="submit" class="btn btn-delete-action" formaction="{{ route('deletesupplier', $supplier->id) }}">X</button>
+                                           <button type="submit" class="btn btn-delete-action" formaction="{{ route('deletecontract', $contract->id) }}">X</button>
                                            
                                        </form>
                                  </td>

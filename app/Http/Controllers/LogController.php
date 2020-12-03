@@ -18,7 +18,7 @@ class LogController extends Controller
 
     public function index()
     {
-        $logs = DB::table('logs')->get();
+        $logs = DB::table('logs')->orderByDesc('id')->get();
         return view('viewlogs', compact('logs'));
     }
 }
