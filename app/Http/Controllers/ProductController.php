@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 
-class SupplierController extends Controller
+class ProductController extends Controller
 {
     /**
      * Paginate the authenticated user's tasks.
@@ -19,88 +19,90 @@ class SupplierController extends Controller
 
     public function index()
     {
-        $suppliers = DB::table('suppliers')->orderByDesc('id')->get();
-        return view('supplierspage', compact('suppliers'));
+        $products = DB::table('products')->get();
+        return view('productspage', compact('products'));
     }
 
-    public function supplier_create()
+    public function product_create()
     {
-        return view('suppliercreatepage');
+        $contracts = DB::table('contracts')->orderByDesc('id')->get();
+        return view('productcreatepage', compact('contracts'));
     }
 
     public function store(Request $request)
     {
         // validate the given request
         $data = $this->validate($request, [
-            'supplier' => 'required|string|max:255',
-            'details' => 'string',
+            'product' => 'required|string|max:255',
+            'with' => 'required|int|max:255',
+            'details' => 'required',
         ]);
 
         // 
-        DB::table('suppliers')->insert([
-            'name' => $data['supplier'], 
-            'details' => $data['details'], 
+
+        DB::table('products')->insert([
+            'name' => $data['product'], 
+            'with' => $data['with'],
+            'details' => $data['details'],
             'created_at' => Carbon::now()
         ]);
 
-
-        $last_id = DB::table('suppliers')->orderByDesc('id')->take(1)->get('id');
+        $last_id = DB::table('products')->orderByDesc('id')->take(1)->get('id');
         $last_id = str_replace("[{\"id\":", "", $last_id);
         $last_id = str_replace("}]", "", $last_id);
         DB::table('logs')->insert([
             'action' => 'create', 
-            'type' => 'supplier',
+            'type' => 'product',
             'modelid' => $last_id,
             'created_at' => Carbon::now()
         ]);
 
 
-        return redirect('/suppliers');
+        return redirect('/products');
     }
 
-    public function supplier_delete($id)
+    public function product_delete($id)
     {
 
-        DB::table('suppliers')->where('id', '=', $id)->delete();
+        DB::table('products')->where('id', '=', $id)->delete();
         DB::table('logs')->insert([
             'action' => 'delete', 
-            'type' => 'supplier',
+            'type' => 'product',
             'modelid' => $id,
             'created_at' => Carbon::now()
         ]);
-
-        return redirect('/suppliers');
+        return redirect('/products');
     }
 
-    public function supplier_view($id)
+    public function product_view($id)
     {
-        $suppliers = DB::table('suppliers')->where([
+        $products = DB::table('products')->where([
                         ['id', '=', $id],
                     ])->get();
-        return view('view_supplierpage', compact('suppliers'));
+        return view('view_productpage', compact('product'));
     }
 
-    public function supplier_edit($id, Request $request)
+    public function product_edit($id, Request $request)
     {
 
         $data = $this->validate($request, [
-            'supplier' => 'required|string|max:255',
+            'product' => 'required|string|max:255',
             'details' => 'string',
         ]);
 
-        DB::table('suppliers')
+        DB::table('products')
               ->where('id', $id)
               ->update([
-                'name' => $data['supplier'], 
+                'name' => $data['products'], 
                 'details' => $data['details']
             ]);
 
         DB::table('logs')->insert([
             'action' => 'update', 
-            'type' => 'supplier',
+            'type' => 'product',
             'modelid' => $id,
             'created_at' => Carbon::now()
         ]);
-        return redirect('/suppliers');
+        return redirect('/products');
     }
 }

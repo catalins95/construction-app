@@ -22,7 +22,7 @@
                        @foreach ($suppliers as $supplier)
                            <tr>
                                 <td>{{ $supplier->id }} </td>
-                                <td>{{ $supplier->name }} </td>
+                                <td><a href="/view_supplier/{{ $supplier->id }}">{{ $supplier->name }}</a> </td>
                                 <td>{{ $supplier->created_at }} </td>
                                 <td> 
                                       <form method="POST" >

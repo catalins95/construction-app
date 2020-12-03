@@ -13,6 +13,9 @@
                         @csrf
                         <div class="form-group">
                             Contract Name: <input id="contract" name="contract" type="text" maxlength="255" class="" autocomplete="off" />
+                        <div class="form-group">   
+                        </div> 
+                            Contract Details: <textarea id="details" name="details" type="textbox" maxlength="255"  autocomplete="off" rows="1" cols="40"></textarea>
                         </div>
                         <div class="form-group">
                             With Supplier: 

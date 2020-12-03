@@ -14,6 +14,10 @@
                         <div class="form-group">
                             Supplier Name: <input id="supplier" name="supplier" type="text" maxlength="255" class="" autocomplete="off" />
                         </div>
+                        <div class="form-group">
+                            Supplier Details: <textarea id="details" name="details" type="textbox" maxlength="255" autocomplete="off" rows="3" cols="50">
+                            </textarea>
+                        </div>
                         <button type="submit" class="btn btn-primary">Create</button>
                     </form>
                 </div>

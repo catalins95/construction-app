@@ -45,16 +45,34 @@
                                     <a class="nav-link" href="{{ route('logs') }}">{{ __('Logs') }}</a>
                                 </li>
                                 <li class="nav-item">
+                                    <b><a class="nav-link">{{ __('|') }}</a></b>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('suppliers') }}">{{ __('Suppliers') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('new_supplier') }}">{{ __('New Supplier') }}</a>
                                 </li>
                                 <li class="nav-item">
+                                    <b><a class="nav-link">{{ __('|') }}</a></b>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('contracts') }}">{{ __('Contracts') }}</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('new_contract') }}">{{ __('New Contract') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <b><a class="nav-link">{{ __('|') }}</a></b>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('products') }}">{{ __('Products') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('new_product') }}">{{ __('New Product') }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <b><a class="nav-link">{{ __('|') }}</a></b>
                                 </li>
                             @if (Route::has('login'))
                                 <li class="nav-item">

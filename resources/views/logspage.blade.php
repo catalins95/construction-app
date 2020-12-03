@@ -23,7 +23,15 @@
                        @foreach ($logs as $log)
                            <tr>
                                 <td>{{ $log->id }} </td>
-                                <td>{{ $log->action }} </td>
+                                <td>
+                                  @if ($log->action == 'create')
+                                    <b><font color=green>Create</font></b>
+                                  @elseif ($log->action == 'update') 
+                                    <b><font color=orange>Update</font></b>
+                                  @elseif ($log->action == 'delete') 
+                                    <b><font color=red>Delete</font></b>
+                                  @endif
+                                </td>
                                 <td>{{ $log->type }} </td>
                                 <td>{{ $log->modelid }} </td>
                                 <td>{{ $log->created_at }} </td>
