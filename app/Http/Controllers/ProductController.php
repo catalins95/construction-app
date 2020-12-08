@@ -93,7 +93,7 @@ class ProductController extends Controller
         DB::table('products')
               ->where('id', $id)
               ->update([
-                'name' => $data['products'], 
+                'name' => $data['product'], 
                 'details' => $data['details']
             ]);
 
