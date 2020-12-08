@@ -79,7 +79,7 @@ class ProductController extends Controller
         $products = DB::table('products')->where([
                         ['id', '=', $id],
                     ])->get();
-        return view('view_productpage', compact('product'));
+        return view('view_productpage', compact('products'));
     }
 
     public function product_edit($id, Request $request)
