@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
+use App\Models\Contracts;
+use App\Models\Suppliers;
+use App\Models\Products;
+use App\Models\logs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,13 +22,13 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = DB::table('products')->get();
+        $products = Products::orderByDesc('id')->get();
         return view('productspage', compact('products'));
     }
 
     public function product_create()
     {
-        $contracts = DB::table('contracts')->orderByDesc('id')->get();
+        $contracts = Contracts::orderByDesc('id')->get();
         return view('productcreatepage', compact('contracts'));
     }
 
@@ -40,17 +43,17 @@ class ProductController extends Controller
 
         // 
 
-        DB::table('products')->insert([
+        Products::insert([
             'name' => $data['product'], 
             'with' => $data['with'],
             'details' => $data['details'],
             'created_at' => Carbon::now()
         ]);
 
-        $last_id = DB::table('products')->orderByDesc('id')->take(1)->get('id');
+        $last_id = Products::orderByDesc('id')->take(1)->get('id');
         $last_id = str_replace("[{\"id\":", "", $last_id);
         $last_id = str_replace("}]", "", $last_id);
-        DB::table('logs')->insert([
+        Logs::insert([
             'action' => 'create', 
             'type' => 'product',
             'modelid' => $last_id,
@@ -64,8 +67,8 @@ class ProductController extends Controller
     public function product_delete($id)
     {
 
-        DB::table('products')->where('id', '=', $id)->delete();
-        DB::table('logs')->insert([
+        Products::find($id)->delete();
+        Logs::insert([
             'action' => 'delete', 
             'type' => 'product',
             'modelid' => $id,
@@ -76,10 +79,8 @@ class ProductController extends Controller
 
     public function product_view($id)
     {
-        $products = DB::table('products')->where([
-                        ['id', '=', $id],
-                    ])->get();
-        return view('view_productpage', compact('products'));
+        $product = Products::find($id);
+        return view('view_productpage', compact('product'));
     }
 
     public function product_edit($id, Request $request)
@@ -90,14 +91,13 @@ class ProductController extends Controller
             'details' => 'string',
         ]);
 
-        DB::table('products')
-              ->where('id', $id)
+        Products::find($id)
               ->update([
                 'name' => $data['product'], 
                 'details' => $data['details']
             ]);
 
-        DB::table('logs')->insert([
+        Logs::insert([
             'action' => 'update', 
             'type' => 'product',
             'modelid' => $id,

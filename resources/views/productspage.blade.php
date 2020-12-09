@@ -4,13 +4,8 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-
-
-            
             <div class="card">
               <center>
-
-
                 <div class="card-body">
                    <table class="table table-striped">
                           <tr>
@@ -31,13 +26,11 @@
                                            @csrf
                                            @method('DELETE')
                                            <button type="submit" class="btn btn-delete-action" formaction="{{ route('deleteproduct', $product->id) }}">X</button>
-                                           
-                                       </form>
+                                      </form>
                                  </td>
                            </tr>
                        @endforeach
                    </table>
-
                 </div>
             </div>
         </div>

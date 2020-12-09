@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
+use App\Models\Suppliers;
+use App\Models\Logs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,7 @@ class SupplierController extends Controller
 
     public function index()
     {
-        $suppliers = DB::table('suppliers')->orderByDesc('id')->get();
+        $suppliers = Suppliers::orderByDesc('id')->get();
         return view('supplierspage', compact('suppliers'));
     }
 
@@ -37,17 +38,17 @@ class SupplierController extends Controller
         ]);
 
         // 
-        DB::table('suppliers')->insert([
+        Suppliers::insert([
             'name' => $data['supplier'], 
             'details' => $data['details'], 
             'created_at' => Carbon::now()
         ]);
 
 
-        $last_id = DB::table('suppliers')->orderByDesc('id')->take(1)->get('id');
+        $last_id = Suppliers::orderByDesc('id')->take(1)->get('id');
         $last_id = str_replace("[{\"id\":", "", $last_id);
         $last_id = str_replace("}]", "", $last_id);
-        DB::table('logs')->insert([
+        Logs::insert([
             'action' => 'create', 
             'type' => 'supplier',
             'modelid' => $last_id,
@@ -61,8 +62,8 @@ class SupplierController extends Controller
     public function supplier_delete($id)
     {
 
-        DB::table('suppliers')->where('id', '=', $id)->delete();
-        DB::table('logs')->insert([
+        Suppliers::find($id)->delete();
+        Logs::insert([
             'action' => 'delete', 
             'type' => 'supplier',
             'modelid' => $id,
@@ -74,10 +75,8 @@ class SupplierController extends Controller
 
     public function supplier_view($id)
     {
-        $suppliers = DB::table('suppliers')->where([
-                        ['id', '=', $id],
-                    ])->get();
-        return view('view_supplierpage', compact('suppliers'));
+        $supplier = Suppliers::find($id);
+        return view('view_supplierpage', compact('supplier'));
     }
 
     public function supplier_edit($id, Request $request)
@@ -88,14 +87,13 @@ class SupplierController extends Controller
             'details' => 'string',
         ]);
 
-        DB::table('suppliers')
-              ->where('id', $id)
+        Suppliers::find($id)
               ->update([
                 'name' => $data['supplier'], 
                 'details' => $data['details']
             ]);
 
-        DB::table('logs')->insert([
+        Logs::insert([
             'action' => 'update', 
             'type' => 'supplier',
             'modelid' => $id,

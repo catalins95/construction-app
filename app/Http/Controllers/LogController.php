@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
+use App\Models\logs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +18,8 @@ class LogController extends Controller
 
     public function index()
     {
-        $logs = DB::table('logs')->orderByDesc('id')->get();
+        //$logs = DB::table('logs')->orderByDesc('id')->get();
+        $logs = Logs::orderBy('id', 'DESC')->get();
         return view('logspage', compact('logs'));
     }
 }
