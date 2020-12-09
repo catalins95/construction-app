@@ -28,7 +28,7 @@
                                       <form method="POST" >
                                            @csrf
                                            @method('DELETE')
-                                           <button type="submit" class="btn btn-delete-action" formaction="{{ route('deletesupplier', $supplier->id) }}">X</button>
+                                           <button type="submit" class="btn btn-delete-action" formaction="{{ route('deletesupplier', $supplier->id) }}"> <font color='red'><b>X</b></font> </button>
                                            
                                        </form>
                                  </td>
