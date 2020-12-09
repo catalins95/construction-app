@@ -43,7 +43,7 @@ class ContractController extends Controller
         //Insert into DB Contracts Table new query
         Contracts::insert([
             'name' => $data['contract'], 
-            'with' => $data['with'],
+            'supplier_id' => $data['with'],
             'details' => $data['details'],
             'created_at' => Carbon::now()
         ]);

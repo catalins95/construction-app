@@ -45,7 +45,7 @@ class ProductController extends Controller
 
         Products::insert([
             'name' => $data['product'], 
-            'with' => $data['with'],
+            'contract_id' => $data['with'],
             'details' => $data['details'],
             'created_at' => Carbon::now()
         ]);

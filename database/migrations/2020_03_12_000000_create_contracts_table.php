@@ -16,7 +16,7 @@ class CreateContractsTable extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('with');
+            $table->string('supplier_id');
             $table->text('details');
             $table->timestamps();
         });
