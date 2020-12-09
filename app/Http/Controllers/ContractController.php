@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contracts;
-use App\Models\Suppliers;
-use App\Models\Logs;
+use App\Models\Contract;
+use App\Models\Supplier;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,13 +21,13 @@ class ContractController extends Controller
 
     public function index()
     {
-        $contracts = Contracts::orderBy('id', 'DESC')->get();
+        $contracts = Contract::orderBy('id', 'DESC')->get();
         return view('contractspage', compact('contracts'));
     }
 
     public function contract_create()
     {
-         $suppliers = Suppliers::orderByDesc('id')->get();
+         $suppliers = Supplier::orderByDesc('id')->get();
         return view('contractcreatepage', compact('suppliers'));
     }
 
@@ -41,7 +41,7 @@ class ContractController extends Controller
         ]);
 
         //Insert into DB Contracts Table new query
-        Contracts::insert([
+        Contract::insert([
             'name' => $data['contract'], 
             'supplier_id' => $data['with'],
             'details' => $data['details'],
@@ -49,12 +49,12 @@ class ContractController extends Controller
         ]);
 
         //Get the Contract ID created
-        $last_id = Contracts::orderByDesc('id')->take(1)->get('id');
+        $last_id = Contract::orderByDesc('id')->take(1)->get('id');
         $last_id = str_replace("[{\"id\":", "", $last_id);
         $last_id = str_replace("}]", "", $last_id);
 
         //Insert into DB Logs Table the action done
-        Logs::insert([
+        Log::insert([
             'action' => 'create', 
             'type' => 'contract',
             'modelid' => $last_id,
@@ -68,8 +68,8 @@ class ContractController extends Controller
     public function contract_delete($id)
     {
 
-        Contracts::find($id)->delete();
-        Logs::insert([
+        Contract::find($id)->delete();
+        Log::insert([
             'action' => 'delete', 
             'type' => 'contract',
             'modelid' => $id,
@@ -80,7 +80,7 @@ class ContractController extends Controller
 
     public function contract_view($id)
     {
-        $contract = Contracts::find($id);
+        $contract = Contract::find($id);
         return view('view_contractpage', compact('contract'));
     }
 
@@ -92,13 +92,13 @@ class ContractController extends Controller
             'details' => 'string',
         ]);
 
-        Contracts::find($id)
+        Contract::find($id)
               ->update([
                 'name' => $data['contract'], 
                 'details' => $data['details']
             ]);
 
-        Logs::insert([
+        Log::insert([
             'action' => 'update', 
             'type' => 'contract',
             'modelid' => $id,

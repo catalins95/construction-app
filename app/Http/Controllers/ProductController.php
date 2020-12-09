@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contracts;
-use App\Models\Suppliers;
-use App\Models\Products;
-use App\Models\Logs;
+use App\Models\Contract;
+use App\Models\Supplier;
+use App\Models\Product;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,13 +22,13 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Products::orderByDesc('id')->get();
+        $products = Product::orderByDesc('id')->get();
         return view('productspage', compact('products'));
     }
 
     public function product_create()
     {
-        $contracts = Contracts::orderByDesc('id')->get();
+        $contracts = Contract::orderByDesc('id')->get();
         return view('productcreatepage', compact('contracts'));
     }
 
@@ -43,17 +43,17 @@ class ProductController extends Controller
 
         // 
 
-        Products::insert([
+        Product::insert([
             'name' => $data['product'], 
             'contract_id' => $data['with'],
             'details' => $data['details'],
             'created_at' => Carbon::now()
         ]);
 
-        $last_id = Products::orderByDesc('id')->take(1)->get('id');
+        $last_id = Product::orderByDesc('id')->take(1)->get('id');
         $last_id = str_replace("[{\"id\":", "", $last_id);
         $last_id = str_replace("}]", "", $last_id);
-        Logs::insert([
+        Log::insert([
             'action' => 'create', 
             'type' => 'product',
             'modelid' => $last_id,
@@ -67,8 +67,8 @@ class ProductController extends Controller
     public function product_delete($id)
     {
 
-        Products::find($id)->delete();
-        Logs::insert([
+        Product::find($id)->delete();
+        Log::insert([
             'action' => 'delete', 
             'type' => 'product',
             'modelid' => $id,
@@ -79,7 +79,7 @@ class ProductController extends Controller
 
     public function product_view($id)
     {
-        $product = Products::find($id);
+        $product = Product::find($id);
         return view('view_productpage', compact('product'));
     }
 
@@ -91,13 +91,13 @@ class ProductController extends Controller
             'details' => 'string',
         ]);
 
-        Products::find($id)
+        Product::find($id)
               ->update([
                 'name' => $data['product'], 
                 'details' => $data['details']
             ]);
 
-        Logs::insert([
+        Log::insert([
             'action' => 'update', 
             'type' => 'product',
             'modelid' => $id,

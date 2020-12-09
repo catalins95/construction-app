@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Suppliers;
-use App\Models\Logs;
+use App\Models\Supplier;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +20,7 @@ class SupplierController extends Controller
 
     public function index()
     {
-        $suppliers = Suppliers::orderByDesc('id')->get();
+        $suppliers = Supplier::orderByDesc('id')->get();
         return view('supplierspage', compact('suppliers'));
     }
 
@@ -38,17 +38,17 @@ class SupplierController extends Controller
         ]);
 
         // 
-        Suppliers::insert([
+        Supplier::insert([
             'name' => $data['supplier'], 
             'details' => $data['details'], 
             'created_at' => Carbon::now()
         ]);
 
 
-        $last_id = Suppliers::orderByDesc('id')->take(1)->get('id');
+        $last_id = Supplier::orderByDesc('id')->take(1)->get('id');
         $last_id = str_replace("[{\"id\":", "", $last_id);
         $last_id = str_replace("}]", "", $last_id);
-        Logs::insert([
+        Log::insert([
             'action' => 'create', 
             'type' => 'supplier',
             'modelid' => $last_id,
@@ -62,8 +62,8 @@ class SupplierController extends Controller
     public function supplier_delete($id)
     {
 
-        Suppliers::find($id)->delete();
-        Logs::insert([
+        Supplier::find($id)->delete();
+        Log::insert([
             'action' => 'delete', 
             'type' => 'supplier',
             'modelid' => $id,
@@ -75,7 +75,7 @@ class SupplierController extends Controller
 
     public function supplier_view($id)
     {
-        $supplier = Suppliers::find($id);
+        $supplier = Supplier::find($id);
         return view('view_supplierpage', compact('supplier'));
     }
 
@@ -87,13 +87,13 @@ class SupplierController extends Controller
             'details' => 'string',
         ]);
 
-        Suppliers::find($id)
+        Supplier::find($id)
               ->update([
                 'name' => $data['supplier'], 
                 'details' => $data['details']
             ]);
 
-        Logs::insert([
+        Log::insert([
             'action' => 'update', 
             'type' => 'supplier',
             'modelid' => $id,

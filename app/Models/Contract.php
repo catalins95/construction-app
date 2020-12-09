@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Contracts extends Model
+class Contract extends Model
 {
     use HasFactory;
     protected $fillable = [
@@ -15,4 +15,14 @@ class Contracts extends Model
         'with',
 
     ];
+
+    public function supplier()
+    {
+    	return $this->belongsTo(Supplier::class);
+    }
+
+    public function product()
+    {
+    	return $this->hasMany(Product::class); 
+    }
 }

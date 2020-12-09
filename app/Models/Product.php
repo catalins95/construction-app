@@ -5,14 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Suppliers extends Model
+class Product extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'name',
         'supplier',
         'details',
+        'with',
 
     ];
+
+    public function contract()
+    {
+    	return $this->belongsTo(Contract::class);
+    }
 }
