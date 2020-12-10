@@ -21,12 +21,12 @@ class Contract extends Model
 
     public function suppliers()
     {
-    	return $this->belongsTo(Supplier::class);
+    	return $this->belongsToMany(Supplier::class, 'supplier_contract');
     }
 
     public function products()
     {
-    	return $this->hasMany(Product::class); 
+    	return $this->belongsToMany(Product::class, 'contract_product'); 
     }
 
     public static function create($name, $details)

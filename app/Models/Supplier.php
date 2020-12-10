@@ -20,7 +20,7 @@ class Supplier extends Model
 
     public function contracts()
     {
-    	return $this->hasMany(Contract::class);
+    	return $this->belongsToMany(Contract::class, 'supplier_contract');
     }
 
     public static function create($name, $details)
