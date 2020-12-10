@@ -5,6 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+                <div class="card-header">Edit Product</div>
                 <div class="card-body">
                       <form method="POST" action="{{ route('edit_product', $product->id) }}">
                         @csrf
@@ -34,6 +35,26 @@
                                </tr>
                        </table>
                     </form>
+                </div>
+              </div>
+              <br><br>
+              <div class="card">
+                <div class="card-header">Relations Table with Contracts</div>
+                <div class="card-body">
+                   <table class="table table-striped">
+                          <tr>
+                              <th>ID</th>
+                              <th>Name</th>
+                              <th>Created At</th>
+                          </tr>
+                       @foreach ($rels as $rel)
+                           <tr>
+                                <td>{{ $rel->id }} </td>
+                                <td>{{ $rel->name }}</td>
+                                <td>{{ $rel->created_at }} </td>
+                           </tr>
+                       @endforeach
+                   </table>
                 </div>
             </div>
         </div>

@@ -59,7 +59,8 @@ class ContractController extends Controller
     public function contract_view($id)
     {
         $contract = Contract::find($id);
-        return view('view_contractpage', compact('contract'));
+        $rels = Contract::find($id)->products;
+        return view('view_contractpage', compact('contract'), compact('rels'));
     }
 
     public function contract_edit($id, Request $request)

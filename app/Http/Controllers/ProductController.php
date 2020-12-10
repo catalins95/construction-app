@@ -59,7 +59,8 @@ class ProductController extends Controller
     public function product_view($id)
     {
         $product = Product::find($id);
-        return view('view_productpage', compact('product'));
+        $rels = Product::find($id)->contracts;
+        return view('view_productpage', compact('product'), compact('rels'));
     }
 
     public function product_edit($id, Request $request)

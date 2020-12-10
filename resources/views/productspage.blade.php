@@ -5,7 +5,6 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-              <center>
                 <div class="card-body">
                    <table class="table table-striped">
                           <tr>

@@ -57,7 +57,8 @@ class SupplierController extends Controller
     public function supplier_view($id)
     {
         $supplier = Supplier::find($id);
-        return view('view_supplierpage', compact('supplier'));
+        $rels = Supplier::find($id)->contracts;
+        return view('view_supplierpage', compact('supplier'), compact('rels'));
     }
 
     public function supplier_edit($id, Request $request)
