@@ -11,7 +11,6 @@
                           <tr>
                               <th>ID</th>
                               <th>Name</th>
-                              <th>Product ID</th>
                               <th>Created At</th>
                               <th>Action</th>
                           </tr>
@@ -19,7 +18,6 @@
                            <tr>
                                 <td>{{ $product->id }} </td>
                                 <td><a href="/view_product/{{ $product->id }}">{{ $product->name }}</a></td>
-                                <td>{{ $product->with }} </td>
                                 <td>{{ $product->created_at }} </td>
                                 <td> 
                                       <form method="POST" >

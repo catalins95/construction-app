@@ -16,7 +16,6 @@
                           <tr>
                               <th>ID</th>
                               <th>Name</th>
-                              <th>Contract ID</th>
                               <th>Created At</th>
                               <th>Action</th>
                           </tr>
@@ -24,7 +23,6 @@
                            <tr>
                                 <td>{{ $contract->id }} </td>
                                 <td><a href="/view_contract/{{ $contract->id }}">{{ $contract->name }}</a></td>
-                                <td>{{ $contract->with }} </td>
                                 <td>{{ $contract->created_at }} </td>
                                 <td> 
                                       <form method="POST" >

@@ -13,21 +13,16 @@ use Carbon\CarbonImmutable;
 
 class ContractController extends Controller
 {
-    /**
-     * Paginate the authenticated user's tasks.
-     *
-     * @return \Illuminate\View\View
-     */
-
     public function index()
     {
         $contracts = Contract::orderBy('id', 'DESC')->get();
+
         return view('contractspage', compact('contracts'));
     }
 
     public function contract_create()
     {
-         $suppliers = Supplier::orderByDesc('id')->get();
+        $suppliers = Supplier::orderByDesc('id')->get();
         return view('contractcreatepage', compact('suppliers'));
     }
 
@@ -36,45 +31,28 @@ class ContractController extends Controller
         // validate the fillable boxes
         $data = $this->validate($request, [
             'contract' => 'required|string|max:255',
-            'with' => 'required|int|max:255',
+            'with' => 'required',
             'details' => 'required',
         ]);
 
         //Insert into DB Contracts Table new query
-        Contract::insert([
-            'name' => $data['contract'], 
-            'supplier_id' => $data['with'],
-            'details' => $data['details'],
-            'created_at' => Carbon::now()
-        ]);
+        Contract::create($data['contract'], $data['details']);
 
-        //Get the Contract ID created
-        $last_id = Contract::orderByDesc('id')->take(1)->get('id');
-        $last_id = str_replace("[{\"id\":", "", $last_id);
-        $last_id = str_replace("}]", "", $last_id);
+        //Get last ContractID & insert into manyToMany Table @ 'supplier_contract'
+        $last_id = Contract::lastid();
+        Contract::CreateManyToMany($last_id ,$data['with']);
 
         //Insert into DB Logs Table the action done
-        Log::insert([
-            'action' => 'create', 
-            'type' => 'contract',
-            'modelid' => $last_id,
-            'created_at' => Carbon::now()
-        ]);
-
+        Log::create('create', 'contract', $last_id);
 
         return redirect('/contracts');
     }
 
     public function contract_delete($id)
     {
-
         Contract::find($id)->delete();
-        Log::insert([
-            'action' => 'delete', 
-            'type' => 'contract',
-            'modelid' => $id,
-            'created_at' => Carbon::now()
-        ]);
+        Log::create('delete', 'contract', $id);
+
         return redirect('/contracts');
     }
 
@@ -86,24 +64,14 @@ class ContractController extends Controller
 
     public function contract_edit($id, Request $request)
     {
-
         $data = $this->validate($request, [
             'contract' => 'required|string|max:255',
             'details' => 'string',
         ]);
 
-        Contract::find($id)
-              ->update([
-                'name' => $data['contract'], 
-                'details' => $data['details']
-            ]);
+        Contract::updateid($id, $data['contract'], $data['details']);
+        Log::create('update', 'contract', $id);
 
-        Log::insert([
-            'action' => 'update', 
-            'type' => 'contract',
-            'modelid' => $id,
-            'created_at' => Carbon::now()
-        ]);
         return redirect('/contracts');
     }
 }

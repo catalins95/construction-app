@@ -12,11 +12,6 @@ use Carbon\CarbonImmutable;
 
 class SupplierController extends Controller
 {
-    /**
-     * Paginate the authenticated user's tasks.
-     *
-     * @return \Illuminate\View\View
-     */
 
     public function index()
     {
@@ -31,29 +26,20 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
-        // validate the given request
         $data = $this->validate($request, [
             'supplier' => 'required|string|max:255',
             'details' => 'string',
         ]);
 
-        // 
-        Supplier::insert([
-            'name' => $data['supplier'], 
-            'details' => $data['details'], 
-            'created_at' => Carbon::now()
-        ]);
+        //Insert into DB Products Table new query
+        Supplier::create($data['supplier'], $data['details']);
 
+        //Get last ProductID & insert into manyToMany Table @ 'contract_product'
+        $last_id = Supplier::lastid();
+        //Supplier::CreateManyToMany($data['with'], $last_id);
 
-        $last_id = Supplier::orderByDesc('id')->take(1)->get('id');
-        $last_id = str_replace("[{\"id\":", "", $last_id);
-        $last_id = str_replace("}]", "", $last_id);
-        Log::insert([
-            'action' => 'create', 
-            'type' => 'supplier',
-            'modelid' => $last_id,
-            'created_at' => Carbon::now()
-        ]);
+        //Insert into DB Logs Table the action done
+        Log::create('create', 'supplier', $last_id);
 
 
         return redirect('/suppliers');
@@ -63,12 +49,7 @@ class SupplierController extends Controller
     {
 
         Supplier::find($id)->delete();
-        Log::insert([
-            'action' => 'delete', 
-            'type' => 'supplier',
-            'modelid' => $id,
-            'created_at' => Carbon::now()
-        ]);
+        Log::create('delete', 'supplier', $id);
 
         return redirect('/suppliers');
     }
@@ -87,18 +68,9 @@ class SupplierController extends Controller
             'details' => 'string',
         ]);
 
-        Supplier::find($id)
-              ->update([
-                'name' => $data['supplier'], 
-                'details' => $data['details']
-            ]);
+        Supplier::updateid($id, $data['supplier'], $data['details']);
+        Log::create('update', 'supplier', $id);
 
-        Log::insert([
-            'action' => 'update', 
-            'type' => 'supplier',
-            'modelid' => $id,
-            'created_at' => Carbon::now()
-        ]);
         return redirect('/suppliers');
     }
 }

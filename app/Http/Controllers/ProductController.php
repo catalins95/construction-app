@@ -14,12 +14,6 @@ use Carbon\CarbonImmutable;
 
 class ProductController extends Controller
 {
-    /**
-     * Paginate the authenticated user's tasks.
-     *
-     * @return \Illuminate\View\View
-     */
-
     public function index()
     {
         $products = Product::orderByDesc('id')->get();
@@ -34,31 +28,21 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // validate the given request
         $data = $this->validate($request, [
             'product' => 'required|string|max:255',
-            'with' => 'required|int|max:255',
+            'with' => 'required',
             'details' => 'required',
         ]);
 
-        // 
+        //Insert into DB Products Table new query
+        Product::create($data['product'], $data['details']);
 
-        Product::insert([
-            'name' => $data['product'], 
-            'contract_id' => $data['with'],
-            'details' => $data['details'],
-            'created_at' => Carbon::now()
-        ]);
+        //Get last ProductID & insert into manyToMany Table @ 'contract_product'
+        $last_id = Product::lastid();
+        Product::CreateManyToMany($data['with'], $last_id);
 
-        $last_id = Product::orderByDesc('id')->take(1)->get('id');
-        $last_id = str_replace("[{\"id\":", "", $last_id);
-        $last_id = str_replace("}]", "", $last_id);
-        Log::insert([
-            'action' => 'create', 
-            'type' => 'product',
-            'modelid' => $last_id,
-            'created_at' => Carbon::now()
-        ]);
+        //Insert into DB Logs Table the action done
+        Log::create('create', 'product', $last_id);
 
 
         return redirect('/products');
@@ -68,12 +52,7 @@ class ProductController extends Controller
     {
 
         Product::find($id)->delete();
-        Log::insert([
-            'action' => 'delete', 
-            'type' => 'product',
-            'modelid' => $id,
-            'created_at' => Carbon::now()
-        ]);
+        Log::create('delete', 'product', $id);
         return redirect('/products');
     }
 
@@ -91,18 +70,9 @@ class ProductController extends Controller
             'details' => 'string',
         ]);
 
-        Product::find($id)
-              ->update([
-                'name' => $data['product'], 
-                'details' => $data['details']
-            ]);
+        Product::updateid($id, $data['product'], $data['details']);
+        Log::create('update', 'product', $id);
 
-        Log::insert([
-            'action' => 'update', 
-            'type' => 'product',
-            'modelid' => $id,
-            'created_at' => Carbon::now()
-        ]);
         return redirect('/products');
     }
 }

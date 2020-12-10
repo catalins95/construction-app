@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\DB;
 
 class Contract extends Model
 {
@@ -16,13 +19,50 @@ class Contract extends Model
 
     ];
 
-    public function supplier()
+    public function suppliers()
     {
     	return $this->belongsTo(Supplier::class);
     }
 
-    public function product()
+    public function products()
     {
     	return $this->hasMany(Product::class); 
+    }
+
+    public static function create($name, $details)
+    {
+        return Contract::insert([
+            'name' => $name, 
+            'details' => $details,
+            'created_at' => Carbon::now()
+        ]);
+    }
+
+    public static function createManyToMany($cid, $sid)
+    {
+        return DB::table('supplier_contract')->insert([
+            'supplier_id' => $sid, 
+            'contract_id' => $cid,
+            'created_at' => Carbon::now()
+        ]);
+    }
+
+    public static function lastid()
+    {
+        // -> OLD METHOD
+        //$last_id = Contract::orderByDesc('id')->take(1)->get('id');
+        //$last_id = str_replace("[{\"id\":", "", $last_id);
+        //$last_id = str_replace("}]", "", $last_id);
+
+        return Contract::orderBy('id', 'desc')->first()->id;
+    }
+
+    public static function updateid($id, $name, $details)
+    {
+        return Contract::find($id)
+            ->update([
+                'name' => $name, 
+                'details' => $details
+        ]);
     }
 }
