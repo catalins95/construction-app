@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 
 class CreateContractsTable extends Migration
 {
@@ -18,7 +20,14 @@ class CreateContractsTable extends Migration
             $table->string('name');
             $table->text('details');
             $table->timestamps();
+            $table->softDeletes();
         });
+
+        DB::table('contracts')->insert([ 
+            'name' => "NO CONTRACT",
+            'details' => "NO CONTRACT!",
+            'created_at' => Carbon::now()
+        ]);
     }
 
     /**

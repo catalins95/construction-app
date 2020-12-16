@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
         'name',
         'supplier',
