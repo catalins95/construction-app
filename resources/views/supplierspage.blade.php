@@ -35,7 +35,7 @@
                                        </form>
                                  </td>
                             </tr>
-                          #endif
+                          @endif
                        @endforeach
                    </table>
 
