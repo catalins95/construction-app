@@ -60,17 +60,21 @@ class ContractController extends Controller
     {
         $contract = Contract::find($id);
         $rels = Contract::find($id)->products;
-        return view('view_contractpage', compact('contract'), compact('rels'));
+        $with = Contract::find($id)->suppliers;
+        $suppliers = Supplier::orderByDesc('id')->get();
+        return view('view_contractpage', compact('contract', 'rels', 'suppliers', 'with'));
     }
 
     public function contract_edit($id, Request $request)
     {
         $data = $this->validate($request, [
             'contract' => 'required|string|max:255',
+            'with' => 'required',
+            'old_supplier' => 'required',
             'details' => 'string',
         ]);
 
-        Contract::updateid($id, $data['contract'], $data['details']);
+        Contract::updateid($id, $data['contract'], $data['old_supplier'], $data['with'], $data['details']);
         Log::create('update', 'contract', $id);
 
         return redirect('/contracts');

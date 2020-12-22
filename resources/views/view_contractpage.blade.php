@@ -30,6 +30,34 @@
                                   </td>
                             </tr>
                             <tr>
+                                  <td>With Supplier: </td>
+                                  <td>
+                                    @foreach ($suppliers as $supplier)
+                                      @foreach ($with as $check)
+                                        @if($check->id == $supplier->id)
+                                          <input name="old_supplier" type="hidden" value='{{ $supplier->id }}'/>
+                                        @endif
+                                      @endforeach
+                                    @endforeach
+
+                                    <select name="with" id="with">
+                                        @foreach ($suppliers as $supplier)
+                                            
+                                            @foreach ($with as $check)
+                                              @if($check->id == $supplier->id)
+
+                                                <option value="{{ $supplier->id }}" selected>{{ $supplier->name }}</option>
+                                              @else
+                                                <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                                              @endif
+                                            @endforeach
+                                            
+                                        
+                                        @endforeach
+                                    </select>
+                                  </td>
+                            </tr>
+                            <tr>
                                 <td>
                                   <button type="submit" class="btn btn-primary">Edit Contract</button>
                                 </td>

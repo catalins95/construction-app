@@ -60,7 +60,8 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $rels = Product::find($id)->contracts;
-        return view('view_productpage', compact('product'), compact('rels'));
+        $contracts = Contract::orderByDesc('id')->get();
+        return view('view_productpage', compact('product', 'rels', 'contracts'));
     }
 
     public function product_edit($id, Request $request)
@@ -69,9 +70,11 @@ class ProductController extends Controller
         $data = $this->validate($request, [
             'product' => 'required|string|max:255',
             'details' => 'string',
+            'old_contract' => 'string',
+            'with' => 'string',
         ]);
 
-        Product::updateid($id, $data['product'], $data['details']);
+        Product::updateid($id, $data['product'], $data['old_contract'], $data['with'], $data['details']);
         Log::create('update', 'product', $id);
 
         return redirect('/products');

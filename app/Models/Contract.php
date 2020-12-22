@@ -16,6 +16,7 @@ class Contract extends Model
     protected $fillable = [
         'name',
         'supplier',
+        'old_supplier',
         'details',
         'with',
 
@@ -59,8 +60,16 @@ class Contract extends Model
         return Contract::orderBy('id', 'desc')->first()->id;
     }
 
-    public static function updateid($id, $name, $details)
+    public static function updateid($id, $name, $old_supplier, $with, $details)
     {
+
+
+        DB::table('supplier_contract')
+                ->where([
+                    ['supplier_id', '=', $old_supplier],
+                    ['contract_id', '=', $id],
+                ])->update(['supplier_id' => $with]);
+
         return Contract::find($id)
             ->update([
                 'name' => $name, 

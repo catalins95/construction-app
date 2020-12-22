@@ -29,6 +29,34 @@
                                     </td>
                               </tr>
                               <tr>
+                                  <td>With Supplier: </td>
+                                  <td>
+                                    @foreach ($contracts as $contract)
+                                      @foreach ($rels as $check)
+                                        @if($check->id == $contract->id)
+                                          <input name="old_contract" type="hidden" value='{{ $contract->id }}'/>
+                                        @endif
+                                      @endforeach
+                                    @endforeach
+
+                                    <select name="with" id="with">
+                                        @foreach ($contracts as $contract)
+                                            
+                                            @foreach ($rels as $rel)
+                                              @if($rel->id == $contract->id)
+
+                                                <option value="{{ $contract->id }}" selected>{{ $contract->name }}</option>
+                                              @else
+                                                <option value="{{ $contract->id }}">{{ $contract->name }}</option>
+                                              @endif
+                                            @endforeach
+                                            
+                                        
+                                        @endforeach
+                                    </select>
+                                  </td>
+                            </tr>
+                              <tr>
                                   <td>
                                     <button type="submit" class="btn btn-primary">Edit Product</button>
                                   </td>

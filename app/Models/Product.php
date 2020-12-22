@@ -16,6 +16,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'supplier',
+        'old_contract',
         'details',
         'with',
 
@@ -50,8 +51,14 @@ class Product extends Model
         return Product::orderBy('id', 'desc')->first()->id;
     }
 
-    public static function updateid($id, $name, $details)
+    public static function updateid($id, $name, $old_contract, $with, $details)
     {
+        DB::table('contract_product')
+                ->where([
+                    ['product_id', '=', $id],
+                    ['contract_id', '=', $old_contract],
+                ])->update(['contract_id' => $with]);
+                
         return Product::find($id)
             ->update([
                 'name' => $name, 
