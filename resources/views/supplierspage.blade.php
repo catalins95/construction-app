@@ -20,7 +20,9 @@
                               <th>Action</th>
                           </tr>
                        @foreach ($suppliers as $supplier)
-                           <tr>
+                          @if($supplier->id == 1)  
+                          @else
+                            <tr>
                                 <td>{{ $supplier->id }} </td>
                                 <td><a href="/view_supplier/{{ $supplier->id }}">{{ $supplier->name }}</a> </td>
                                 <td>{{ $supplier->created_at }} </td>
@@ -32,7 +34,8 @@
                                            
                                        </form>
                                  </td>
-                           </tr>
+                            </tr>
+                          #endif
                        @endforeach
                    </table>
 

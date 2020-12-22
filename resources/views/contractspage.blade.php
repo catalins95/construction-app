@@ -20,7 +20,9 @@
                               <th>Action</th>
                           </tr>
                        @foreach ($contracts as $contract)
-                           <tr>
+                          @if($contract->id == 1)  
+                          @else
+                            <tr>
                                 <td>{{ $contract->id }} </td>
                                 <td><a href="/view_contract/{{ $contract->id }}">{{ $contract->name }}</a></td>
                                 <td>{{ $contract->created_at }} </td>
@@ -32,7 +34,8 @@
                                            
                                        </form>
                                  </td>
-                           </tr>
+                            </tr>
+                          @endif
                        @endforeach
                    </table>
 
